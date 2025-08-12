@@ -1,0 +1,190 @@
+@import './variables';
+
+// Base styles that apply to both themes
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-family-sans;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+// Theme-specific styles using the themify mixin
+@include themify($themes) {
+  body {
+    background-color: themed('bg-primary');
+    color: themed('text-primary');
+  }
+
+  .app {
+    min-height: 100vh;
+    background-color: themed('bg-primary');
+    color: themed('text-primary');
+  }
+
+  .app-header {
+    background-color: themed('bg-secondary');
+    border-bottom: 1px solid themed('border-color');
+  }
+
+  .app-header h1 {
+    color: themed('accent-primary');
+  }
+
+  .btn {
+    border-radius: $border-radius-md;
+    padding: $spacing-sm $spacing-md;
+    transition: background-color 0.2s;
+  }
+
+  .btn-primary {
+    background-color: themed('accent-primary');
+    color: #ffffff;
+    &:hover {
+      background-color: darken(themed('accent-primary'), 10%);
+    }
+  }
+
+  .btn-secondary {
+    background-color: themed('accent-secondary');
+    color: #ffffff;
+    &:hover {
+      background-color: darken(themed('accent-secondary'), 10%);
+    }
+  }
+
+  .dashboard-card {
+    background-color: themed('card-bg');
+    border: 1px solid themed('border-color');
+    box-shadow: themed('card-shadow');
+    border-radius: $border-radius-lg;
+  }
+
+  .card-title {
+    color: themed('accent-primary');
+    margin-bottom: $spacing-md;
+  }
+
+  .metric-label {
+    color: themed('text-secondary');
+  }
+
+  .metric-value {
+    color: themed('accent-secondary');
+    font-family: $font-family-mono;
+    
+    &.warning {
+      color: themed('accent-warning');
+    }
+    
+    &.error {
+      color: themed('accent-danger');
+    }
+  }
+
+  .progress-bar {
+    background-color: themed('border-color');
+  }
+
+  // Table styles
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: $spacing-md 0;
+  }
+
+  th {
+    text-align: left;
+    padding: $spacing-sm;
+    background-color: themed('bg-secondary');
+    color: themed('text-secondary');
+    border-bottom: 2px solid themed('border-color');
+  }
+
+  td {
+    padding: $spacing-sm;
+    border-bottom: 1px solid themed('border-color');
+  }
+
+  // Status indicator
+  .status-indicator {
+    display: flex;
+    align-items: center;
+  }
+
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: $spacing-sm;
+    
+    &.connected {
+      background-color: themed('accent-secondary');
+    }
+    
+    &.disconnected {
+      background-color: themed('accent-danger');
+    }
+  }
+
+  // API Client specific
+  .api-client {
+    color: themed('text-primary');
+  }
+
+  .api-client-header {
+    background-color: themed('bg-secondary');
+    border-bottom: 1px solid themed('border-color');
+  }
+
+  .api-client-controls input {
+    background-color: themed('bg-primary');
+    color: themed('text-primary');
+    border: 1px solid themed('border-color');
+  }
+
+  .sidebar {
+    background-color: themed('bg-secondary');
+    border-right: 1px solid themed('border-color');
+  }
+
+  .collection-item, .endpoint-item {
+    background-color: themed('card-bg');
+    border: 1px solid themed('border-color');
+    &:hover {
+      background-color: darken(themed('card-bg'), 5%);
+    }
+    &.active {
+      border-left: 3px solid themed('accent-primary');
+    }
+  }
+
+  .response-body {
+    background-color: darken(themed('bg-primary'), 5%);
+    border: 1px solid themed('border-color');
+  }
+
+  // Theme toggle button
+  .theme-toggle {
+    position: fixed;
+    bottom: $spacing-md;
+    right: $spacing-md;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: themed('accent-primary');
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: darken(themed('accent-primary'), 10%);
+    }
+  }
+}

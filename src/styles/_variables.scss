@@ -1,0 +1,130 @@
+// Variables for light theme
+$light-bg-primary: #f8f9fa;
+$light-bg-secondary: #ffffff;
+$light-text-primary: #212529;
+$light-text-secondary: #6c757d;
+$light-border-color: #dee2e6;
+$light-accent-primary: #0078d4;
+$light-accent-secondary: #5cb85c;
+$light-accent-warning: #f0ad4e;
+$light-accent-danger: #d9534f;
+$light-card-bg: #ffffff;
+$light-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+// Variables for dark theme
+$dark-bg-primary: #1e1e1e;
+$dark-bg-secondary: #252526;
+$dark-text-primary: #e0e0e0;
+$dark-text-secondary: #a0a0a0;
+$dark-border-color: #3e3e3e;
+$dark-accent-primary: #0078d4;
+$dark-accent-secondary: #3fb950;
+$dark-accent-warning: #f0883e;
+$dark-accent-danger: #f85149;
+$dark-card-bg: #2d2d2d;
+$dark-card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+// Font variables
+$font-family-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+$font-family-mono: 'Fira Code', Consolas, 'Courier New', monospace;
+$font-size-base: 16px;
+$font-size-sm: 0.875rem;
+$font-size-lg: 1.25rem;
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+
+// Border radius
+$border-radius-sm: 0.25rem;
+$border-radius-md: 0.5rem;
+$border-radius-lg: 0.75rem;
+
+// Mixins
+@mixin themify($themes) {
+  @each $theme, $map in $themes {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $value in $map {
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function themed($key) {
+  @return map-get($theme-map, $key);
+}
+
+// SSH status colors
+$light-status-disconnected-bg: #f8f9fa;
+$light-status-disconnected-color: #6c757d;
+$light-status-connecting-bg: #fff3cd;
+$light-status-connecting-color: #856404;
+$light-status-connected-bg: #d4edda;
+$light-status-connected-color: #155724;
+$light-status-error-bg: #f8d7da;
+$light-status-error-color: #721c24;
+
+$dark-status-disconnected-bg: #343a40;
+$dark-status-disconnected-color: #adb5bd;
+$dark-status-connecting-bg: #3f2f00;
+$dark-status-connecting-color: #ffc107;
+$dark-status-connected-bg: #1e4620;
+$dark-status-connected-color: #75b798;
+$dark-status-error-bg: #3d1c1f;
+$dark-status-error-color: #ea868f;
+
+$themes: (
+  light: (
+    bg-primary: $light-bg-primary,
+    bg-secondary: $light-bg-secondary,
+    text-primary: $light-text-primary,
+    text-secondary: $light-text-secondary,
+    border-color: $light-border-color,
+    accent-primary: $light-accent-primary,
+    accent-secondary: $light-accent-secondary,
+    accent-warning: $light-accent-warning,
+    accent-danger: $light-accent-danger,
+    card-bg: $light-card-bg,
+    card-shadow: $light-card-shadow,
+    
+    // SSH status colors
+    status-disconnected-bg: $light-status-disconnected-bg,
+    status-disconnected-color: $light-status-disconnected-color,
+    status-connecting-bg: $light-status-connecting-bg,
+    status-connecting-color: $light-status-connecting-color,
+    status-connected-bg: $light-status-connected-bg,
+    status-connected-color: $light-status-connected-color,
+    status-error-bg: $light-status-error-bg,
+    status-error-color: $light-status-error-color,
+  ),
+  dark: (
+    bg-primary: $dark-bg-primary,
+    bg-secondary: $dark-bg-secondary,
+    text-primary: $dark-text-primary,
+    text-secondary: $dark-text-secondary,
+    border-color: $dark-border-color,
+    accent-primary: $dark-accent-primary,
+    accent-secondary: $dark-accent-secondary,
+    accent-warning: $dark-accent-warning,
+    accent-danger: $dark-accent-danger,
+    card-bg: $dark-card-bg,
+    card-shadow: $dark-card-shadow,
+    
+    // SSH status colors
+    status-disconnected-bg: $dark-status-disconnected-bg,
+    status-disconnected-color: $dark-status-disconnected-color,
+    status-connecting-bg: $dark-status-connecting-bg,
+    status-connecting-color: $dark-status-connecting-color,
+    status-connected-bg: $dark-status-connected-bg,
+    status-connected-color: $dark-status-connected-color,
+    status-error-bg: $dark-status-error-bg,
+    status-error-color: $dark-status-error-color,
+  ),
+);
