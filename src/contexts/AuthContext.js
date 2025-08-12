@@ -79,6 +79,30 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Placeholder OAuth login
+  const loginWithProvider = async (provider) => {
+    setStatus(AUTH_STATUS.AUTHENTICATING);
+    setError(null);
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const oauthUser = {
+          id: Date.now(),
+          username: `${provider}_user`,
+          name: `${provider.charAt(0).toUpperCase() + provider.slice(1)} User`,
+          role: 'developer',
+          provider,
+          token: 'mock-oauth-token'
+        };
+
+        setUser(oauthUser);
+        localStorage.setItem('piHubUser', JSON.stringify(oauthUser));
+        setStatus(AUTH_STATUS.AUTHENTICATED);
+        resolve(oauthUser);
+      }, 500);
+    });
+  };
+
   // Logout function
   const logout = () => {
     setUser(null);
@@ -99,6 +123,7 @@ export const AuthProvider = ({ children }) => {
     error,
     login,
     logout,
+    loginWithProvider,
     hasPermission,
     isAuthenticated: status === AUTH_STATUS.AUTHENTICATED
   };

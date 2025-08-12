@@ -6,12 +6,15 @@ import ProcessList from './components/ProcessList';
 import ApiClient from './components/ApiClient';
 import SSHConnection from './components/SSHConnection/SSHConnection';
 import ThemeToggle from './components/ThemeToggle';
-import './App.css';
+import './App.scss';
+import LoginForm from './components/LoginForm/LoginForm';
+import { useAuth } from './contexts/AuthContext';
 
 const App = () => {
   const [systemData, setSystemData] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     // Check if electron API is available
@@ -92,6 +95,10 @@ const App = () => {
       console.error('Error refreshing data:', error);
     }
   };
+
+  if (!isAuthenticated) {
+    return <LoginForm />;
+  }
 
   if (!isConnected) {
     return (
