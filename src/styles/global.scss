@@ -1,0 +1,18 @@
+@import './variables';
+
+:root {
+  --bg-primary: #{$dark-bg-primary};
+  --bg-secondary: #{$dark-bg-secondary};
+  --text-primary: #{$dark-text-primary};
+  --text-secondary: #{$dark-text-secondary};
+  --text-tertiary: #{$dark-text-secondary};
+  --border-color: #{$dark-border-color};
+  --input-bg: #{$dark-bg-primary};
+  --primary-color: #{$dark-accent-primary};
+  --primary-hover: #{darken($dark-accent-primary, 10%)};
+  --secondary-color: #5a5a5a;
+  --secondary-hover: #6a6a6a;
+  --warning-color: #{$dark-accent-warning};
+  --error-color: #{$dark-accent-danger};
+  --error-bg: #{$dark-status-error-bg};
+}

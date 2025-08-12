@@ -5,7 +5,7 @@ import './LoginForm.scss';
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login, status, error } = useAuth();
+  const { login, loginWithProvider, status, error } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,12 +59,39 @@ const LoginForm = () => {
           {error && <div className="error-message">{error}</div>}
 
           <div className="form-actions">
-            <button 
-              type="submit" 
-              className="login-button" 
+            <button
+              type="submit"
+              className="login-button"
               disabled={isAuthenticating || !username || !password}
             >
               {isAuthenticating ? 'Authenticating...' : 'Login'}
+            </button>
+          </div>
+
+          <div className="sso-buttons">
+            <button
+              type="button"
+              className="sso-button google"
+              onClick={() => loginWithProvider('google')}
+              disabled={isAuthenticating}
+            >
+              Sign in with Google
+            </button>
+            <button
+              type="button"
+              className="sso-button microsoft"
+              onClick={() => loginWithProvider('microsoft')}
+              disabled={isAuthenticating}
+            >
+              Sign in with Microsoft
+            </button>
+            <button
+              type="button"
+              className="sso-button facebook"
+              onClick={() => loginWithProvider('facebook')}
+              disabled={isAuthenticating}
+            >
+              Sign in with Facebook
             </button>
           </div>
         </form>
