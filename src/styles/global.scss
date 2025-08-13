@@ -1,0 +1,19 @@
+@use './variables' as vars;
+@use 'sass:color';
+
+:root {
+  --bg-primary: #{vars.$dark-bg-primary};
+  --bg-secondary: #{vars.$dark-bg-secondary};
+  --text-primary: #{vars.$dark-text-primary};
+  --text-secondary: #{vars.$dark-text-secondary};
+  --text-tertiary: #{vars.$dark-text-secondary};
+  --border-color: #{vars.$dark-border-color};
+  --input-bg: #{vars.$dark-bg-primary};
+  --primary-color: #{vars.$dark-accent-primary};
+  --primary-hover: #{color.adjust(vars.$dark-accent-primary, $lightness: -10%)};
+  --secondary-color: #5a5a5a;
+  --secondary-hover: #6a6a6a;
+  --warning-color: #{vars.$dark-accent-warning};
+  --error-color: #{vars.$dark-accent-danger};
+  --error-bg: #{vars.$dark-status-error-bg};
+}

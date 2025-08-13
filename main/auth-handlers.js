@@ -3,7 +3,7 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
 // Constants
-const API_BASE_URL = 'http://localhost:3000/api'; // Adjust this to your Express server's URL
+const API_BASE_URL = 'http://localhost:8001/api'; // Adjust this to your Express server's URL
 const JWT_SECRET = process.env.JWT_SECRET || 'pi-studio-dev-secret'; // In production, use environment variable
 
 // Auth handlers for main process

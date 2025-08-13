@@ -15,6 +15,9 @@ module.exports = {
     filename: isDevelopment ? 'bundle.js' : 'bundle.[contenthash].js',
     clean: true
   },
+  experiments: {
+    topLevelAwait: true
+  },
   module: {
     rules: [
       {
@@ -25,6 +28,13 @@ module.exports = {
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react']
           }
+        }
+      },
+      {
+        test: /\.mjs$/,
+        type: 'javascript/esm',
+        resolve: {
+          fullySpecified: false
         }
       },
       {
@@ -60,7 +70,12 @@ module.exports = {
     new NodePolyfillPlugin() // Add Node.js polyfills automatically
   ],
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.mjs'],
+    extensionAlias: {
+      '.js': ['.js', '.ts'],
+      '.cjs': ['.cjs', '.js'],
+      '.mjs': ['.mjs', '.js']
+    },
     fallback: {
       "buffer": require.resolve("buffer"),
       "process": require.resolve("process/browser"),
@@ -79,7 +94,8 @@ module.exports = {
     },
     alias: {
       // Add any specific aliases if needed
-      'process': 'process/browser'
+      'process': 'process/browser',
+      'process/browser': require.resolve('process/browser')
     }
   },
   devServer: {
@@ -93,6 +109,26 @@ module.exports = {
     headers: {
       "Cross-Origin-Embedder-Policy": "require-corp",
       "Cross-Origin-Opener-Policy": "same-origin"
-    }
-  }
+    },
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+        secure: false,
+        logLevel: 'debug'
+      }
+    ]
+  },
+  ignoreWarnings: [
+    {
+      module: /node_modules\/@reduxjs\/toolkit/,
+      message: /Can't resolve 'process\/browser'/,
+    },
+    {
+      module: /node_modules\/es-toolkit/,
+      message: /Can't resolve 'process\/browser'/,
+    },
+    /Failed to parse source map/,
+  ]
 };

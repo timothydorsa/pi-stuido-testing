@@ -1,31 +1,15 @@
 import React from 'react';
 
 const ServiceHealth = ({ services }) => {
-  // Mock services for testing
-  const mockServices = [
-    {
-      name: 'Express Backend',
-      pid: 12345,
-      status: 'running',
-      cpu: 15.2,
-      memory: 64 * 1024 * 1024, // 64MB
-      uptime: 300000 // 5 minutes
-    },
-    {
-      name: 'Electron Main Process',
-      pid: 12346,
-      status: 'running',
-      cpu: 8.5,
-      memory: 128 * 1024 * 1024, // 128MB
-      uptime: 300000 // 5 minutes
-    }
-  ];
-
-  const displayServices = services && services.length > 0 ? services : mockServices;
-  const isLoading = !services || services.length === 0;
-
-  if (isLoading) {
-    console.log('ServiceHealth: No service data provided, using mock data for display');
+  if (!services || services.length === 0) {
+    return (
+      <div className="service-health">
+        <h3 className="card-title">Service Health</h3>
+        <div className="loading-state">
+          <p>Loading service information...</p>
+        </div>
+      </div>
+    );
   }
   const formatUptime = (uptime) => {
     const seconds = Math.floor(uptime / 1000);
@@ -55,11 +39,10 @@ const ServiceHealth = ({ services }) => {
   return (
     <div>
       <h3 className="card-title">
-        Service Health ({displayServices.length})
-        {isLoading && <span style={{ fontSize: '0.8em', color: '#ffaa00' }}> (Demo Data)</span>}
+        Service Health ({services.length})
       </h3>
       
-      {displayServices.map((service, index) => (
+      {services.map((service, index) => (
           <div 
             key={index} 
             className={`service-item ${getServiceClass(service.status, service.cpu)}`}

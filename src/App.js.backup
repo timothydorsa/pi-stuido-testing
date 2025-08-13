@@ -1,0 +1,279 @@
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Navigation from './components/Navigation/Navigation';
+import SystemOverview from './pages/SystemOverview';
+import NetworkAnalytics from './pages/NetworkAnalytics';
+import ProcessManagement from './pages/ProcessManagement';
+import DatabaseTools from './pages/DatabaseTools';
+import SystemServices from './pages/SystemServices';
+import SecuritySSH from './pages/SecuritySSH';
+import DeviceDiscovery from './pages/DeviceDiscovery';
+import About from './pages/About';
+import { useAuth } from './contexts/AuthContext';
+import LoginForm from './components/LoginForm/LoginForm';
+import './App.scss';
+
+const App = () => {
+  const [systemData, setSystemData] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    // Check if electron API is available
+    if (window.electronAPI) {
+      setIsConnected(true);
+      
+      // Load initial system information
+      loadSystemInfo();
+      
+      // Set up real-time system updates
+      window.electronAPI.onSystemUpdate((data) => {
+        setSystemData(data);
+        
+        // Send data to preview window if open
+        if (previewWindowOpen) {
+          window.electronAPI.sendToPreview({
+            type: 'metrics',
+            cpu: data.metrics.cpuLoad.currentLoad,
+            memory: data.metrics.memInfo.used,
+            services: data.serviceHealth.length,
+            timestamp: data.timestamp
+          });
+        }
+      });
+    } else {
+      // For development/testing purposes, fetch data from API directly
+      console.log('Electron API not available, fetching data from backend API');
+      setIsConnected(true);
+      loadSystemInfo();
+      
+      // Set up periodic data refresh
+      const interval = setInterval(loadSystemInfo, 5000);
+      return () => clearInterval(interval);
+    }
+
+    return () => {
+      if (window.electronAPI) {
+        window.electronAPI.removeAllListeners('system-update');
+      }
+    };
+  }, [previewWindowOpen]);
+
+  const loadSystemInfo = async () => {
+    try {
+      if (window.electronAPI) {
+        const info = await window.electronAPI.getSystemInfo();
+        console.log('System Info:', info);
+        setSystemData(info);
+      } else {
+        // Fetch data from backend API directly
+        const [systemResponse, metricsResponse, processesResponse] = await Promise.all([
+          fetch('http://localhost:8001/api/system'),
+          fetch('http://localhost:8001/api/metrics'),
+          fetch('http://localhost:8001/api/processes')
+        ]);
+        
+        if (systemResponse.ok && metricsResponse.ok && processesResponse.ok) {
+          const systemInfo = await systemResponse.json();
+          const metrics = await metricsResponse.json();
+          const processesData = await processesResponse.json();
+          
+          // Create service health from backend process info
+          const serviceHealth = [
+            {
+              name: 'Express Backend',
+              pid: process.pid || 'unknown',
+              status: 'running',
+              cpu: metrics.cpu.currentLoad || 0,
+              memory: metrics.memory.used || 0,
+              uptime: Date.now() - (Date.now() - 300000) // Mock 5 min uptime
+            },
+            {
+              name: 'Webpack Dev Server',
+              pid: 'dev-server',
+              status: 'running',
+              cpu: 5.2,
+              memory: 128 * 1024 * 1024, // 128MB
+              uptime: Date.now() - (Date.now() - 300000)
+            }
+          ];
+          
+          // Create heap info from memory data
+          const heapInfo = {
+            used: metrics.memory.used,
+            total: metrics.memory.total,
+            limit: metrics.memory.total,
+            percentage: (metrics.memory.used / metrics.memory.total) * 100
+          };
+          
+          const combinedData = {
+            ...systemInfo,
+            metrics: {
+              cpuLoad: metrics.cpu,
+              memInfo: metrics.memory,
+              networkStats: metrics.network,
+              diskIO: metrics.disk
+            },
+            serviceHealth,
+            heapInfo,
+            processes: processesData.processes,
+            timestamp: Date.now()
+          };
+          
+          console.log('System Info from API:', combinedData);
+          setSystemData(combinedData);
+        } else {
+          console.error('Failed to fetch system data from API');
+        }
+      }
+    } catch (error) {
+      console.error('Error loading system info:', error);
+    }
+  };
+
+  const openPreviewWindow = async () => {
+    try {
+      if (window.electronAPI) {
+        await window.electronAPI.openPreviewWindow();
+        setPreviewWindowOpen(true);
+      }
+    } catch (error) {
+      console.error('Error opening preview window:', error);
+    }
+  };
+
+  const refreshData = async () => {
+    try {
+      if (window.electronAPI) {
+        const [metrics, heapInfo, serviceHealth] = await Promise.all([
+          window.electronAPI.getSystemMetrics(),
+          window.electronAPI.getHeapInfo(),
+          window.electronAPI.getServiceHealth()
+        ]);
+        
+        setSystemData({
+          metrics,
+          heapInfo,
+          serviceHealth,
+          timestamp: Date.now()
+        });
+      } else {
+        // Fetch data from API when Electron is not available
+        await loadSystemInfo();
+      }
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+    }
+  };
+
+  if (!isAuthenticated) {
+    return <LoginForm />;
+  }
+
+  if (!isConnected) {
+    return (
+      <div className="app">
+        <div className="error-message">
+          <h2>Loading Dashboard...</h2>
+          <p>Initializing system monitoring components.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      <header className="app-header">
+        <h1>System Monitor Dashboard</h1>
+        <div className="header-controls">
+          <button onClick={refreshData} className="btn btn-primary">
+            Refresh Data
+          </button>
+          <button onClick={openPreviewWindow} className="btn btn-secondary">
+            Open Preview Window
+          </button>
+        </div>
+      </header>
+
+      <main className="app-main">
+        <div className="dashboard-grid">
+          {/* Enhanced System Monitoring Components */}
+          <div className="dashboard-card">
+            <SystemMonitor data={systemData?.metrics} />
+          </div>
+          
+          <div className="dashboard-card">
+            <CPUCoreMonitor data={systemData?.metrics} />
+          </div>
+          
+          <div className="dashboard-card">
+            <NetworkMonitor data={systemData?.metrics} />
+          </div>
+          
+          <div className="dashboard-card">
+            <DiskIOMonitor data={systemData?.metrics} />
+          </div>
+          
+          <div className="dashboard-card">
+            <ProcessMonitor data={systemData?.metrics} />
+          </div>
+          
+          <div className="dashboard-card">
+            <HeapMonitor heapInfo={systemData?.heapInfo} />
+          </div>
+
+          <div className="dashboard-card full-width">
+            <SystemLogMonitor data={systemData?.metrics} />
+          </div>
+          
+          {/* Existing Components */}
+          <div className="dashboard-card">
+            <ServiceHealth services={systemData?.serviceHealth || []} />
+          </div>
+          
+          <div className="dashboard-card">
+            <ProcessList />
+          </div>
+          
+          <div className="dashboard-card full-width">
+            <ServicesManager />
+          </div>
+          
+          <div className="dashboard-card full-width">
+            <BackendControl />
+          </div>
+          
+          <div className="dashboard-card full-width">
+            <DatabaseManager />
+          </div>
+          
+          <div className="dashboard-card full-width">
+            <NetworkScanner />
+          </div>
+          
+          <div className="dashboard-card full-width">
+            <ApiClient />
+          </div>
+          
+          <div className="dashboard-card full-width">
+            <SSHConnection />
+          </div>
+        </div>
+      </main>
+
+      <footer className="app-footer">
+        <div className="status-indicator">
+          <span className={`status-dot ${isConnected ? 'connected' : 'disconnected'}`}></span>
+          <span>
+            {isConnected ? 'Connected to Electron' : 'Disconnected'}
+            {systemData && ` • Last update: ${new Date(systemData.timestamp).toLocaleTimeString()}`}
+          </span>
+        </div>
+        <ThemeToggle />
+      </footer>
+    </div>
+  );
+};
+
+export default App;

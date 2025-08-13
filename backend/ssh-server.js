@@ -40,8 +40,9 @@ class SSHServer {
     if (fs.existsSync(hostKeyPath)) {
       try {
         // Load existing keys
+        const privateKeyData = fs.readFileSync(hostKeyPath, 'utf8');
         this.keyPair = {
-          privateKey: fs.readFileSync(hostKeyPath, 'utf8')
+          privateKey: privateKeyData
         };
         console.log('Loaded existing SSH host keys');
       } catch (error) {
@@ -62,48 +63,17 @@ class SSHServer {
   async generateAndSaveNewKeys(hostKeyPath) {
     console.log('Generating new SSH host keys...');
     
-    // For development, create a static key that we know works with ssh2
-    const staticPrivateKey = `-----BEGIN OPENSSH PRIVATE KEY-----
-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
-9vdEBhcHAtc2VydmVyAQIDBA==
------END OPENSSH PRIVATE KEY-----`;
-
-    fs.writeFileSync(hostKeyPath, staticPrivateKey, 'utf8');
-    this.keyPair = { privateKey: staticPrivateKey };
+    // Generate RSA key pair
+    const { privateKey } = crypto.generateKeyPairSync('rsa', {
+      modulusLength: 2048,
+      privateKeyEncoding: {
+        type: 'pkcs1',
+        format: 'pem'
+      }
+    });
+    
+    fs.writeFileSync(hostKeyPath, privateKey, 'utf8');
+    this.keyPair = { privateKey };
     console.log('SSH host keys generated and saved');
   }
 

@@ -9,6 +9,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getServiceHealth: () => ipcRenderer.invoke('get-service-health'),
   getHeapInfo: () => ipcRenderer.invoke('get-heap-info'),
   
+  // Backend control APIs
+  controlBackend: (action, service) => ipcRenderer.invoke('control-backend', action, service),
+  
   // Window management
   openPreviewWindow: () => ipcRenderer.invoke('open-preview-window'),
   sendToPreview: (data) => ipcRenderer.invoke('send-to-preview', data),

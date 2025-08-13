@@ -1,13 +1,14 @@
-# System Monitor Dashboard
+# 🖥️ Pi Studio System Monitor
 
-A React Electron Node Express application with IPC communication, separate processes, system monitoring, and real-time preview functionality.
+A comprehensive real-time system monitoring application built with React, Electron, and Node.js. Features advanced process management with interactive gauges, real-time charts, and process control capabilities.
 
-## Features
+## ✨ Features
 
-- **Electron Main Process**: Manages windows, IPC communication, and system monitoring
-- **React Frontend**: Interactive dashboard with real-time system metrics
-- **Express Backend**: Separate process for API endpoints and WebSocket communication
-- **IPC Communication**: Secure communication between renderer and main processes
+### 🎯 Core Functionality
+- **Real-time System Monitoring**: Live CPU, memory, disk, and network metrics
+- **Process Management**: Visual gauges with process control (stop, resume, kill)
+- **Interactive Charts**: Real-time data visualization with Recharts
+- **WebSocket Integration**: Live data updates every 3 seconds
 - **System Monitoring**: Real-time CPU, memory, and process monitoring
 - **Service Health**: Monitor running services and their resource usage
 - **Heap Monitoring**: Track application memory usage and heap statistics

@@ -1,11 +1,11 @@
-@import './variables';
+@use './variables' as vars;
 
 // Base styles that apply to both themes
 body {
   margin: 0;
   padding: 0;
-  font-family: $font-family-sans;
-  font-size: $font-size-base;
+  font-family: vars.$font-family-sans;
+  font-size: vars.$font-size-base;
   line-height: 1.5;
   transition: background-color 0.3s, color 0.3s;
 }

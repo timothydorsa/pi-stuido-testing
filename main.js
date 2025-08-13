@@ -55,10 +55,24 @@ class ElectronApp {
     });
 
     const indexPath = this.isDev 
-      ? 'http://localhost:3000' 
+      ? 'http://localhost:3002' 
       : `file://${path.join(__dirname, '../dist/index.html')}`;
     
     this.mainWindow.loadURL(indexPath);
+
+    // Set Content Security Policy based on environment
+    this.mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+      const csp = this.isDev 
+        ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:*; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' http://localhost:* ws://localhost:*; img-src 'self' data:;"
+        : "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https:; img-src 'self' data:;";
+      
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          'Content-Security-Policy': [csp]
+        }
+      });
+    });
 
     if (this.isDev) {
       this.mainWindow.webContents.openDevTools();
@@ -90,7 +104,7 @@ class ElectronApp {
     });
 
     const previewPath = this.isDev 
-      ? 'http://localhost:3001/preview' 
+      ? 'http://localhost:8001/preview' 
       : `file://${path.join(__dirname, '../dist/preview.html')}`;
     
     this.previewWindow.loadURL(previewPath);
@@ -104,7 +118,7 @@ class ElectronApp {
     const serverPath = path.join(__dirname, 'backend', 'server.js');
     this.backendProcess = spawn('node', [serverPath], {
       stdio: 'pipe',
-      env: { ...process.env, PORT: 3001 }
+      env: { ...process.env, PORT: 8001 }
     });
 
     this.services.set('backend', {
@@ -309,9 +323,17 @@ class ElectronApp {
         startTime: Date.now()
       });
       
-      console.log('SSH server started successfully on port 2222');
+      console.log('SSH Server started successfully on port 2222');
     } catch (error) {
-      console.error('Failed to start SSH server:', error);
+      console.error('Failed to start SSH server:', error.message);
+      
+      this.services.set('ssh-server', {
+        pid: null,
+        name: 'SSH Server',
+        status: 'failed',
+        error: error.message,
+        startTime: Date.now()
+      });
     }
   }
 }

@@ -1,0 +1,291 @@
+{
+  "version": "1.0.0",
+  "name": "pi-studio-testing",
+  "dependencies": {
+    "@babel/core": {
+      "version": "7.28.0",
+      "resolved": "https://registry.npmjs.org/@babel/core/-/core-7.28.0.tgz",
+      "overridden": false
+    },
+    "@babel/preset-env": {
+      "version": "7.28.0",
+      "resolved": "https://registry.npmjs.org/@babel/preset-env/-/preset-env-7.28.0.tgz",
+      "overridden": false
+    },
+    "@babel/preset-react": {
+      "version": "7.27.1",
+      "resolved": "https://registry.npmjs.org/@babel/preset-react/-/preset-react-7.27.1.tgz",
+      "overridden": false
+    },
+    "@tanstack/react-query": {
+      "version": "5.85.0",
+      "resolved": "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.85.0.tgz",
+      "overridden": false
+    },
+    "arp-table": {
+      "version": "0.0.0",
+      "resolved": "https://registry.npmjs.org/arp-table/-/arp-table-0.0.0.tgz",
+      "overridden": false
+    },
+    "assert": {
+      "version": "2.1.0",
+      "resolved": "https://registry.npmjs.org/assert/-/assert-2.1.0.tgz",
+      "overridden": false
+    },
+    "axios": {
+      "version": "1.11.0",
+      "resolved": "https://registry.npmjs.org/axios/-/axios-1.11.0.tgz",
+      "overridden": false
+    },
+    "babel-loader": {
+      "version": "10.0.0",
+      "resolved": "https://registry.npmjs.org/babel-loader/-/babel-loader-10.0.0.tgz",
+      "overridden": false
+    },
+    "buffer": {
+      "version": "6.0.3",
+      "resolved": "https://registry.npmjs.org/buffer/-/buffer-6.0.3.tgz",
+      "overridden": false
+    },
+    "concurrently": {
+      "version": "9.2.0",
+      "resolved": "https://registry.npmjs.org/concurrently/-/concurrently-9.2.0.tgz",
+      "overridden": false
+    },
+    "cors": {
+      "version": "2.8.5",
+      "resolved": "https://registry.npmjs.org/cors/-/cors-2.8.5.tgz",
+      "overridden": false
+    },
+    "cpu-stat": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/cpu-stat/-/cpu-stat-2.0.1.tgz",
+      "overridden": false
+    },
+    "crypto-browserify": {
+      "version": "3.12.1",
+      "resolved": "https://registry.npmjs.org/crypto-browserify/-/crypto-browserify-3.12.1.tgz",
+      "overridden": false
+    },
+    "css-loader": {
+      "version": "7.1.2",
+      "resolved": "https://registry.npmjs.org/css-loader/-/css-loader-7.1.2.tgz",
+      "overridden": false
+    },
+    "electron-builder": {
+      "version": "26.0.12",
+      "resolved": "https://registry.npmjs.org/electron-builder/-/electron-builder-26.0.12.tgz",
+      "overridden": false
+    },
+    "electron": {
+      "version": "37.2.6",
+      "resolved": "https://registry.npmjs.org/electron/-/electron-37.2.6.tgz",
+      "overridden": false
+    },
+    "express": {
+      "version": "5.1.0",
+      "resolved": "https://registry.npmjs.org/express/-/express-5.1.0.tgz",
+      "overridden": false
+    },
+    "global": {
+      "version": "4.4.0",
+      "resolved": "https://registry.npmjs.org/global/-/global-4.4.0.tgz",
+      "overridden": false
+    },
+    "highlight.js": {
+      "version": "11.11.1",
+      "resolved": "https://registry.npmjs.org/highlight.js/-/highlight.js-11.11.1.tgz",
+      "overridden": false
+    },
+    "html-webpack-plugin": {
+      "version": "5.6.3",
+      "resolved": "https://registry.npmjs.org/html-webpack-plugin/-/html-webpack-plugin-5.6.3.tgz",
+      "overridden": false
+    },
+    "https-browserify": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/https-browserify/-/https-browserify-1.0.0.tgz",
+      "overridden": false
+    },
+    "license-checker": {
+      "version": "25.0.1",
+      "resolved": "https://registry.npmjs.org/license-checker/-/license-checker-25.0.1.tgz",
+      "overridden": false
+    },
+    "node-fetch": {
+      "version": "3.3.2",
+      "resolved": "https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz",
+      "overridden": false
+    },
+    "node-nmap": {
+      "version": "4.0.0",
+      "resolved": "https://registry.npmjs.org/node-nmap/-/node-nmap-4.0.0.tgz",
+      "overridden": false
+    },
+    "node-polyfill-webpack-plugin": {
+      "version": "4.1.0",
+      "resolved": "https://registry.npmjs.org/node-polyfill-webpack-plugin/-/node-polyfill-webpack-plugin-4.1.0.tgz",
+      "overridden": false
+    },
+    "node-ssh": {
+      "version": "13.2.1",
+      "resolved": "https://registry.npmjs.org/node-ssh/-/node-ssh-13.2.1.tgz",
+      "overridden": false
+    },
+    "nodemon": {
+      "version": "3.1.10",
+      "resolved": "https://registry.npmjs.org/nodemon/-/nodemon-3.1.10.tgz",
+      "overridden": false
+    },
+    "os-browserify": {
+      "version": "0.3.0",
+      "resolved": "https://registry.npmjs.org/os-browserify/-/os-browserify-0.3.0.tgz",
+      "overridden": false
+    },
+    "oui": {
+      "version": "13.0.5",
+      "resolved": "https://registry.npmjs.org/oui/-/oui-13.0.5.tgz",
+      "overridden": false
+    },
+    "pidusage": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/pidusage/-/pidusage-4.0.1.tgz",
+      "overridden": false
+    },
+    "ping": {
+      "version": "0.4.4",
+      "resolved": "https://registry.npmjs.org/ping/-/ping-0.4.4.tgz",
+      "overridden": false
+    },
+    "process": {
+      "version": "0.11.10",
+      "resolved": "https://registry.npmjs.org/process/-/process-0.11.10.tgz",
+      "overridden": false
+    },
+    "react-dom": {
+      "version": "19.1.1",
+      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-19.1.1.tgz",
+      "overridden": false
+    },
+    "react-json-pretty": {
+      "version": "2.2.0",
+      "resolved": "https://registry.npmjs.org/react-json-pretty/-/react-json-pretty-2.2.0.tgz",
+      "overridden": false
+    },
+    "react-router-dom": {
+      "version": "7.8.0",
+      "resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-7.8.0.tgz",
+      "overridden": false
+    },
+    "react-syntax-highlighter": {
+      "version": "15.6.1",
+      "resolved": "https://registry.npmjs.org/react-syntax-highlighter/-/react-syntax-highlighter-15.6.1.tgz",
+      "overridden": false
+    },
+    "react-tabs": {
+      "version": "6.1.0",
+      "resolved": "https://registry.npmjs.org/react-tabs/-/react-tabs-6.1.0.tgz",
+      "overridden": false
+    },
+    "react": {
+      "version": "19.1.1",
+      "resolved": "https://registry.npmjs.org/react/-/react-19.1.1.tgz",
+      "overridden": false
+    },
+    "recharts": {
+      "version": "3.1.2",
+      "resolved": "https://registry.npmjs.org/recharts/-/recharts-3.1.2.tgz",
+      "overridden": false
+    },
+    "sass-loader": {
+      "version": "16.0.5",
+      "resolved": "https://registry.npmjs.org/sass-loader/-/sass-loader-16.0.5.tgz",
+      "overridden": false
+    },
+    "sass": {
+      "version": "1.90.0",
+      "resolved": "https://registry.npmjs.org/sass/-/sass-1.90.0.tgz",
+      "overridden": false
+    },
+    "sqlite3": {
+      "version": "5.1.7",
+      "resolved": "https://registry.npmjs.org/sqlite3/-/sqlite3-5.1.7.tgz",
+      "overridden": false
+    },
+    "ssh2": {
+      "version": "1.16.0",
+      "resolved": "https://registry.npmjs.org/ssh2/-/ssh2-1.16.0.tgz",
+      "overridden": false
+    },
+    "stream-browserify": {
+      "version": "3.0.0",
+      "resolved": "https://registry.npmjs.org/stream-browserify/-/stream-browserify-3.0.0.tgz",
+      "overridden": false
+    },
+    "stream-http": {
+      "version": "3.2.0",
+      "resolved": "https://registry.npmjs.org/stream-http/-/stream-http-3.2.0.tgz",
+      "overridden": false
+    },
+    "style-loader": {
+      "version": "4.0.0",
+      "resolved": "https://registry.npmjs.org/style-loader/-/style-loader-4.0.0.tgz",
+      "overridden": false
+    },
+    "swagger-jsdoc": {
+      "version": "6.2.8",
+      "resolved": "https://registry.npmjs.org/swagger-jsdoc/-/swagger-jsdoc-6.2.8.tgz",
+      "overridden": false
+    },
+    "swagger-ui-express": {
+      "version": "5.0.1",
+      "resolved": "https://registry.npmjs.org/swagger-ui-express/-/swagger-ui-express-5.0.1.tgz",
+      "overridden": false
+    },
+    "systeminformation": {
+      "version": "5.27.7",
+      "resolved": "https://registry.npmjs.org/systeminformation/-/systeminformation-5.27.7.tgz",
+      "overridden": false
+    },
+    "url": {
+      "version": "0.11.4",
+      "resolved": "https://registry.npmjs.org/url/-/url-0.11.4.tgz",
+      "overridden": false
+    },
+    "util": {
+      "version": "0.12.5",
+      "resolved": "https://registry.npmjs.org/util/-/util-0.12.5.tgz",
+      "overridden": false
+    },
+    "uuid": {
+      "version": "11.1.0",
+      "resolved": "https://registry.npmjs.org/uuid/-/uuid-11.1.0.tgz",
+      "overridden": false
+    },
+    "wait-on": {
+      "version": "8.0.4",
+      "resolved": "https://registry.npmjs.org/wait-on/-/wait-on-8.0.4.tgz",
+      "overridden": false
+    },
+    "webpack-cli": {
+      "version": "6.0.1",
+      "resolved": "https://registry.npmjs.org/webpack-cli/-/webpack-cli-6.0.1.tgz",
+      "overridden": false
+    },
+    "webpack-dev-server": {
+      "version": "5.2.2",
+      "resolved": "https://registry.npmjs.org/webpack-dev-server/-/webpack-dev-server-5.2.2.tgz",
+      "overridden": false
+    },
+    "webpack": {
+      "version": "5.101.1",
+      "resolved": "https://registry.npmjs.org/webpack/-/webpack-5.101.1.tgz",
+      "overridden": false
+    },
+    "ws": {
+      "version": "8.18.3",
+      "resolved": "https://registry.npmjs.org/ws/-/ws-8.18.3.tgz",
+      "overridden": false
+    }
+  }
+}

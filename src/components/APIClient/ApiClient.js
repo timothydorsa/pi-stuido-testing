@@ -8,7 +8,7 @@ import 'highlight.js/styles/atom-one-dark.css';
 hljs.registerLanguage('json', json);
 
 const ApiClient = () => {
-  const [swaggerUrl, setSwaggerUrl] = useState('http://localhost:3001/api-docs');
+  const [swaggerUrl, setSwaggerUrl] = useState('http://localhost:8001/api-docs');
   const [endpoints, setEndpoints] = useState([]);
   const [selectedEndpoint, setSelectedEndpoint] = useState(null);
   const [response, setResponse] = useState(null);
@@ -254,7 +254,7 @@ const ApiClient = () => {
   };
   
   const openSwaggerUI = () => {
-    window.open('http://localhost:3001/api-docs', '_blank');
+    window.open('http://localhost:8001/api-docs', '_blank');
   };
   
   const formatJSON = (json) => {

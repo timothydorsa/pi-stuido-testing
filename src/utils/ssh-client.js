@@ -1,11 +1,11 @@
-// Browser-friendly SSH client mock
-// This is a mock implementation for development and testing
+import { apiRequest } from './api';
 
+// Real SSH client that connects to the backend SSH server
 class SSHClient {
   constructor() {
     this.connected = false;
-    this.keyPair = null;
-    this.hostPublicKey = null;
+    this.websocket = null;
+    this.messageHandlers = new Map();
   }
 
   /**
@@ -14,15 +14,7 @@ class SSHClient {
    */
   async init() {
     try {
-      // In a browser environment, we need to mock some functionality
-      console.log('Initializing SSH client in browser environment');
-      this.keyPair = {
-        publicKey: 'MOCK_PUBLIC_KEY',
-        privateKey: 'MOCK_PRIVATE_KEY'
-      };
-      
-      // Mock fetching server's public key
-      this.hostPublicKey = 'MOCK_HOST_PUBLIC_KEY';
+      console.log('Initializing SSH client for backend connection');
       return Promise.resolve();
     } catch (error) {
       console.error('Error initializing SSH client:', error);
@@ -31,114 +23,98 @@ class SSHClient {
   }
 
   /**
-   * Register this client's public key with the server
-   * @returns {Promise<void>}
+   * Connect to the SSH server via WebSocket proxy
+   * @param {string} host - Server hostname or IP  
+   * @param {number} port - Server port
+   * @param {string} username - SSH username
+   * @param {string} password - SSH password (if using password auth)
+   * @returns {Promise<boolean>}
    */
-  async registerPublicKey() {
+  async connect(host = 'localhost', port = 2222, username = 'user', password = '') {
     try {
-      console.log('Mock registering public key with server');
-      return Promise.resolve();
+      // Connect via our backend API
+      const result = await apiRequest('ssh-connect', {
+        method: 'POST',
+        body: JSON.stringify({ host, port, username, password })
+      });
+
+      this.connected = result.connected;
+      console.log('SSH connection established:', result);
+      return this.connected;
     } catch (error) {
-      console.error('Error registering public key:', error);
+      console.error('SSH connection failed:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Execute a command via SSH
+   * @param {string} command - Command to execute
+   * @returns {Promise<string>}
+   */
+  async executeCommand(command) {
+    try {
+      if (!this.connected) {
+        throw new Error('Not connected to SSH server');
+      }
+
+      const result = await apiRequest('ssh-execute', {
+        method: 'POST',
+        body: JSON.stringify({ command })
+      });
+
+      return result.output;
+    } catch (error) {
+      console.error('Error executing SSH command:', error);
       throw error;
     }
   }
 
   /**
-   * Connect to the SSH server
-   * @param {string} host - Server hostname or IP
-   * @param {number} port - Server port
-   * @returns {Promise<void>}
-   */
-  connect(host = 'localhost', port = 2222) {
-    console.log(`Mock connecting to SSH server at ${host}:${port}`);
-    this.connected = true;
-    return Promise.resolve();
-  }
-
-  /**
-   * Execute a command on the SSH server
-   * @param {string} command - Command to execute
-   * @returns {Promise<string>}
-   */
-  executeCommand(command) {
-    console.log(`Mock executing command: ${command}`);
-    
-    // Return mock data based on command
-    switch (command) {
-      case 'get-system-info':
-        return Promise.resolve(JSON.stringify({
-          version: '1.0.0',
-          hostname: 'mock-hostname',
-          uptime: 3600,
-          timestamp: Date.now()
-        }));
-      case 'get-metrics':
-        return Promise.resolve(JSON.stringify({
-          cpu: Math.random() * 100,
-          memory: {
-            total: 16384,
-            used: Math.random() * 8192
-          }
-        }));
-      case 'get-processes':
-        return Promise.resolve(JSON.stringify([
-          { pid: 1, name: 'process1', cpu: Math.random() * 10, memory: Math.random() * 500 },
-          { pid: 2, name: 'process2', cpu: Math.random() * 10, memory: Math.random() * 500 }
-        ]));
-      default:
-        return Promise.resolve('Unknown command');
-    }
-  }
-
-  /**
    * Get system information via SSH
-   * @returns {Promise<object>}
+   * @returns {Promise<Object>}
    */
   async getSystemInfo() {
     try {
-      const result = await this.executeCommand('get-system-info');
-      return JSON.parse(result);
+      return await apiRequest('system');
     } catch (error) {
-      console.error('Error getting system info via SSH:', error);
+      console.error('Error getting system info:', error);
       throw error;
     }
   }
 
   /**
    * Get system metrics via SSH
-   * @returns {Promise<object>}
+   * @returns {Promise<Object>}
    */
   async getMetrics() {
     try {
-      const result = await this.executeCommand('get-metrics');
-      return JSON.parse(result);
+      return await apiRequest('metrics');
     } catch (error) {
-      console.error('Error getting metrics via SSH:', error);
+      console.error('Error getting metrics:', error);
       throw error;
     }
   }
 
   /**
    * Get process list via SSH
-   * @returns {Promise<Array>}
+   * @returns {Promise<Object>}
    */
   async getProcesses() {
     try {
-      const result = await this.executeCommand('get-processes');
-      return JSON.parse(result);
+      return await apiRequest('processes');
     } catch (error) {
-      console.error('Error getting processes via SSH:', error);
+      console.error('Error getting processes:', error);
       throw error;
     }
   }
 
   /**
-   * Disconnect from the SSH server
+   * Disconnect from SSH server
    */
   disconnect() {
-    console.log('Mock disconnecting from SSH server');
     this.connected = false;
+    console.log('SSH client disconnected');
   }
 }
 
