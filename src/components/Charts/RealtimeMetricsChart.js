@@ -19,7 +19,7 @@ import {
 } from 'recharts';
 import './RealtimeMetricsChart.scss';
 
-const RealtimeMetricsChart = () => {
+const RealtimeMetricsChart = ({ sharedWsData }) => {
   const [metricsHistory, setMetricsHistory] = useState([]);
   const [currentMetrics, setCurrentMetrics] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -41,16 +41,28 @@ const RealtimeMetricsChart = () => {
     services: '#2196f3'
   };
 
+  // If no shared WebSocket data is provided, manage our own connection
   useEffect(() => {
-    connectWebSocket();
-    loadInitialData();
+    if (!sharedWsData) {
+      connectWebSocket();
+      loadInitialData();
 
-    return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
-      }
-    };
-  }, []);
+      return () => {
+        if (wsRef.current) {
+          wsRef.current.close();
+        }
+      };
+    }
+  }, [sharedWsData]);
+
+  // Update charts when shared WebSocket data changes
+  useEffect(() => {
+    if (sharedWsData) {
+      setWsStatus('connected');
+      setIsConnected(true);
+      handleMetricsUpdate(sharedWsData);
+    }
+  }, [sharedWsData]);
 
   const loadInitialData = async () => {
     try {
