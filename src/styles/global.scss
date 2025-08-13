@@ -1,7 +1,9 @@
 @use './variables' as vars;
 @use 'sass:color';
 
-:root {
+// Dark theme as default variables
+:root,
+body.theme-dark {
   --bg-primary: #{vars.$dark-bg-primary};
   --bg-secondary: #{vars.$dark-bg-secondary};
   --text-primary: #{vars.$dark-text-primary};
@@ -16,4 +18,21 @@
   --warning-color: #{vars.$dark-accent-warning};
   --error-color: #{vars.$dark-accent-danger};
   --error-bg: #{vars.$dark-status-error-bg};
+}
+
+body.theme-light {
+  --bg-primary: #{vars.$light-bg-primary};
+  --bg-secondary: #{vars.$light-bg-secondary};
+  --text-primary: #{vars.$light-text-primary};
+  --text-secondary: #{vars.$light-text-secondary};
+  --text-tertiary: #{vars.$light-text-secondary};
+  --border-color: #{vars.$light-border-color};
+  --input-bg: #{vars.$light-bg-primary};
+  --primary-color: #{vars.$light-accent-primary};
+  --primary-hover: #{color.adjust(vars.$light-accent-primary, $lightness: -10%)};
+  --secondary-color: #5a5a5a;
+  --secondary-hover: #6a6a6a;
+  --warning-color: #{vars.$light-accent-warning};
+  --error-color: #{vars.$light-accent-danger};
+  --error-bg: #{vars.$light-status-error-bg};
 }

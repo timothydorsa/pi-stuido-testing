@@ -13,13 +13,15 @@ body {
 // Theme-specific styles using the themify mixin
 @include themify($themes) {
   body {
-    background-color: themed('bg-primary');
+    background: themed('bg-gradient');
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
     color: themed('text-primary');
   }
 
   .app {
     min-height: 100vh;
-    background-color: themed('bg-primary');
+    background: transparent;
     color: themed('text-primary');
   }
 
@@ -186,5 +188,17 @@ body {
     &:hover {
       background-color: darken(themed('accent-primary'), 10%);
     }
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ServicesManager.scss';
+import { apiRequest } from '../../utils/api';
 
 const ServicesManager = () => {
   const [services, setServices] = useState({});
@@ -62,8 +63,7 @@ const ServicesManager = () => {
 
   const fetchServicesStatus = async () => {
     try {
-      const response = await fetch('http://localhost:8001/api/services');
-      const data = await response.json();
+      const data = await apiRequest('services');
       setServices(data.services);
       setSystemStats(data.systemStats);
       setLoading(false);
@@ -75,8 +75,7 @@ const ServicesManager = () => {
 
   const fetchGlobalHealth = async () => {
     try {
-      const response = await fetch('http://localhost:8001/api/services/health');
-      const data = await response.json();
+      const data = await apiRequest('services/health');
       setGlobalHealth(data);
     } catch (error) {
       console.error('Error fetching global health:', error);
@@ -86,11 +85,7 @@ const ServicesManager = () => {
   const performServiceAction = async (serviceId, action) => {
     setOperation({ serviceId, action });
     try {
-      const response = await fetch(`http://localhost:8001/api/services/${serviceId}/${action}`, {
-        method: 'POST'
-      });
-      const result = await response.json();
-      
+      const result = await apiRequest(`services/${serviceId}/${action}`, { method: 'POST' });
       if (result.success) {
         await fetchServicesStatus();
       }
@@ -104,10 +99,7 @@ const ServicesManager = () => {
   const performAllServicesAction = async (action) => {
     setOperation({ serviceId: 'all', action });
     try {
-      const response = await fetch(`http://localhost:8001/api/services/all/${action}`, {
-        method: 'POST'
-      });
-      const result = await response.json();
+      await apiRequest(`services/all/${action}`, { method: 'POST' });
       await fetchServicesStatus();
     } catch (error) {
       console.error(`Error performing ${action} on all services:`, error);
@@ -118,8 +110,7 @@ const ServicesManager = () => {
 
   const fetchServiceLogs = async (serviceId) => {
     try {
-      const response = await fetch(`http://localhost:8001/api/services/${serviceId}/logs?lines=50`);
-      const data = await response.json();
+      const data = await apiRequest(`services/${serviceId}/logs?lines=50`);
       setLogs(prev => ({ ...prev, [serviceId]: data.logs }));
     } catch (error) {
       console.error('Error fetching logs:', error);
@@ -136,10 +127,7 @@ const ServicesManager = () => {
   const runSystemMaintenance = async () => {
     setOperation({ serviceId: 'system', action: 'maintenance' });
     try {
-      const response = await fetch('http://localhost:8001/api/services/maintenance/system-check', {
-        method: 'POST'
-      });
-      const data = await response.json();
+      const data = await apiRequest('services/maintenance/system-check', { method: 'POST' });
       setMaintenanceData(data);
     } catch (error) {
       console.error('Error running system maintenance:', error);
